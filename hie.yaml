@@ -1,0 +1,7 @@
+cradle:
+  cabal:
+    - path: "src"
+      component: "lib:hs-playground"
+
+    - path: "app/Main.hs"
+      component: "hs-playground:exe:hs-playground"
