@@ -15,24 +15,26 @@ extra-source-files:  CHANGELOG.md
 common common-options
   -- build-depends:       base-noprelude ^>= 4.13.0.0
   --                    , relude ^>= 0.7.0
-  build-depends:       base ^>=4.13.0.0
+  build-depends:       base ^>=4.14.0.0
                      , aeson
+                     , conduit
                      , sqlite-simple
-                     , servant
-                     , servant-server
                      , template-haskell
                      , text
                      , unordered-containers
                      , unliftio-core
                      , unliftio
                      , warp
+                     , resourcet
 
 library
   import:              common-options
   hs-source-dirs:      src
-  exposed-modules:     Servant
-                       Aeson
+  exposed-modules:     Aeson
+                       HConduit
+                       HResourceT
                        SqliteSimple
+                       Main
 
 executable hs-playground
   import:              common-options
@@ -41,5 +43,5 @@ executable hs-playground
   -- other-extensions:
   build-depends:       hs-playground
   hs-source-dirs:      app
-  ghc-options:         -O2 -threaded -rtsopts -with-rtsopts=-N
+  ghc-options:         -O2 -threaded -rtsopts -with-rtsopts=-N4
   default-language:    Haskell2010
