@@ -18,11 +18,13 @@ common common-options
                      , unliftio
                      , warp
                      , resourcet
+                     , syb
 
 library
   import:              common-options
   hs-source-dirs:      src
   exposed-modules:     Aeson
+                       Generic
                        HConduit
                        HResourceT
                        SqliteSimple
