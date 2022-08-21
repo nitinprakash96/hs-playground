@@ -9,7 +9,7 @@ common common-options
   default-language:  Haskell2010
   build-depends:       base
                      , aeson
-                     , conduit
+                     , conduit ^>= 1.3.4.2
                      , sqlite-simple
                      , template-haskell
                      , text
@@ -19,15 +19,20 @@ common common-options
                      , warp
                      , resourcet
                      , syb
+                     , containers
 
 library
   import:              common-options
   hs-source-dirs:      src
   exposed-modules:     Aeson
+                       Coerce
                        Generic
+                       GhcGenerics
                        HConduit
                        HResourceT
                        SqliteSimple
+                       DataStructures
+                       TypeFamilies
                        Main
 
 executable hs-playground
