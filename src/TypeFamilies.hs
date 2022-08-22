@@ -1,8 +1,25 @@
-{-# LANGUAGE RankNTypes, DataKinds, StandaloneKindSignatures, PolyKinds, TypeOperators, TypeFamilies, GADTs #-}
+{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE StandaloneKindSignatures #-}
+{-# LANGUAGE PolyKinds #-}
+{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE GADTs #-}
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE AllowAmbiguousTypes #-}
+
 module TypeFamilies where
 
 import Data.Kind (Type)
 import Data.Functor.Identity (Identity)
+import GHC.TypeLits (Symbol, KnownSymbol (..), symbolVal)
+import Data.Proxy ( Proxy (..) )
+
+--------------------------------------------------
+-- CLOSED TYPE FAMILIES
+--------------------------------------------------
 
 append :: forall a.[a] -> [a] -> [a]
 append [] ys = ys
@@ -49,3 +66,20 @@ hlength (_ :& xs) = 1 + hlength xs
 -- to implement operations on GADTs.
 --
 -- Another thing to note: evaluation of type families is not lazy.
+
+--------------------------------------------------
+-- OPEN TYPE FAMILIES
+--------------------------------------------------
+
+type Label :: Type -> Symbol
+type family Label t where
+    Label Double = "number"
+    Label String = "string"
+    Label Bool   = "bool"
+
+-- >>> label @Double
+-- "number"
+-- >>> label @Bool
+-- "bool"
+label :: forall t. KnownSymbol (Label t) => String
+label = symbolVal (Proxy @(Label t))
