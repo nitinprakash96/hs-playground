@@ -23,12 +23,15 @@ import Data.Maybe (fromMaybe)
 -- CLOSED TYPE FAMILIES
 --------------------------------------------------
 
+-- In these kind of type families:
+-- we specify all equations up front, like a value-level function.
+
 append :: forall a.[a] -> [a] -> [a]
 append [] ys = ys
 append (x:xs) ys = x : append xs ys
 
 -- using type families
--- these are computations at the type leve
+-- these are computations at the type level
 
 type Append :: forall a.[a] -> [a] -> [a]
 type family Append xs ys where
@@ -72,6 +75,9 @@ hlength (_ :& xs) = 1 + hlength xs
 --------------------------------------------------
 -- OPEN TYPE FAMILIES
 --------------------------------------------------
+
+-- Unlike closed type families which behave like value level functions
+-- these behavve more like type classes
 
 -- type Label :: Type -> Symbol
 -- type family Label t where

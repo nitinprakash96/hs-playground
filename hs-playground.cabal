@@ -9,6 +9,7 @@ common common-options
   default-language:  Haskell2010
   build-depends:       base
                      , aeson
+                     , blaze-builder
                      , conduit ^>= 1.3.4.2
                      , sqlite-simple
                      , template-haskell
@@ -16,9 +17,11 @@ common common-options
                      , unordered-containers
                      , unliftio-core
                      , unliftio
+                     , syb
+                     , http-types
+                     , wai
                      , warp
                      , resourcet
-                     , syb
                      , containers
 
 library
@@ -33,6 +36,7 @@ library
                        SqliteSimple
                        DataStructures
                        TypeFamilies
+                       Wai
                        Main
 
 executable hs-playground
