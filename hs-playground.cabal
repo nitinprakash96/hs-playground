@@ -23,6 +23,7 @@ common common-options
                      , warp
                      , resourcet
                      , containers
+                     , stm
 
 library
   import:              common-options
@@ -34,10 +35,11 @@ library
                        HConduit
                        HResourceT
                        SqliteSimple
-                       DataStructures
                        TypeFamilies
                        Wai
+                       Stm
                        Main
+                       Pearls.MinFree
 
 executable hs-playground
   import:              common-options

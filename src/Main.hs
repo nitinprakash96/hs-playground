@@ -1,4 +1,6 @@
-{-# LANGUAGE MagicHash, UnboxedTuples, UnliftedNewtypes #-}
+{-# LANGUAGE MagicHash        #-}
+{-# LANGUAGE UnboxedTuples    #-}
+{-# LANGUAGE UnliftedNewtypes #-}
 
 module Main where
 
@@ -40,7 +42,7 @@ bigPi :: ParityInteger
 bigPi = go (piFromInteger 0) [1 .. 100000]
   where
     go :: ParityInteger -> [Integer] -> ParityInteger
-    go acc [] = acc
+    go acc []       = acc
     go acc (i : is) = go (add acc (piFromInteger i)) is
 
 integerFromPi :: ParityInteger -> Integer
@@ -61,7 +63,7 @@ bigPi# :: () -> ParityInteger#
 bigPi# _ = go (piFromInteger# 0) [1 .. 100000]
   where
     go :: ParityInteger# -> [Integer] -> ParityInteger#
-    go acc [] = acc
+    go acc []       = acc
     go acc (i : is) = go (add# acc (piFromInteger# i)) is
 
 
