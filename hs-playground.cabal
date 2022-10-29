@@ -39,7 +39,10 @@ library
                        Wai
                        Stm
                        Main
+                       
+                       -- From the book "Pearls of Functional Algorithm design"
                        Pearls.MinFree
+                       Pearls.Surpasser
 
 executable hs-playground
   import:              common-options
