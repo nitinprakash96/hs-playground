@@ -41,14 +41,14 @@ library
                        Main
                        
                        -- From the book "Pearls of Functional Algorithm design"
+                       -- listed in the order they appear in the book
                        Pearls.MinFree
                        Pearls.Surpasser
+                       Pearls.Saddleback
 
 executable hs-playground
   import:              common-options
   main-is:             Main.hs
-  -- other-modules:
-  -- other-extensions:
   build-depends:       hs-playground
   hs-source-dirs:      app
   ghc-options:         -O2 -threaded -rtsopts -with-rtsopts=-N4

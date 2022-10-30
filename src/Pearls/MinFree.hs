@@ -1,3 +1,5 @@
+-- Chapter 1
+
 module Pearls.MinFree
     ( sort
     , countlist

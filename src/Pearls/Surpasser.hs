@@ -1,3 +1,5 @@
+-- Chapter 2
+
 {-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 
 module Pearls.Surpasser
