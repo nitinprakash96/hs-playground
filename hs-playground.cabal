@@ -45,6 +45,7 @@ library
                        Pearls.MinFree
                        Pearls.Surpasser
                        Pearls.Saddleback
+                       Pearls.Selection
 
 executable hs-playground
   import:              common-options
