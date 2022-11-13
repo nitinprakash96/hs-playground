@@ -28,14 +28,14 @@ mkMatrix f z = [ [f x y | x <- [0..z]] | y <- [0..z] ]
 --
 -- >>> invertByJack (+) 4
 -- [(0,4),(1,3),(2,2),(3,1),(4,0)]
-invertByJack :: (Num a, Enum a, Eq a) => (a -> a -> a) -> a -> [(a, a)]
+invertByJack :: Integral a => (a -> a -> a) -> a -> [(a, a)]
 invertByJack f z = [ (x, y) | x <- [0..z], y <- [0..z], f x y == z ]
 
 -- | Slightly optimised version of @invertByJack@
 --
 -- Since @f(x , y) ≥ x + y@ if @f@ is increasing, the search can be
 -- confined to values on or below the diagonal of the square.
-invertByTheo :: (Num a, Enum a, Eq a) => (a -> a -> a) -> a -> [(a, a)]
+invertByTheo :: Integral a => (a -> a -> a) -> a -> [(a, a)]
 invertByTheo f z =
     [ (x, y) | x <- [0..z], y <- [0..z - x], f x y == z ]
 
@@ -73,7 +73,7 @@ invertByAnne f z =
 
 -- What if we apply binary search?
 -- m = maximum (filter (\y → f (0, y) <= z ) [0 .. z])
--- n = maximum (filter (\x -> f (x, 9) <= z) [0 .. z])
+-- n = maximum (filter (\x -> f (x, 0) <= z) [0 .. z])
 --
 -- Then we can define invert f z = find (0, m) f z
 -- This way, rather than searching a (z+1) x (z+1) square we can get away
