@@ -73,9 +73,7 @@ mvarArray = do
 newtype TMVar a = TMVar (TVar (Maybe a))
 
 newTMVar :: Maybe a -> STM (TMVar a)
-newTMVar = \case
-    Just val -> TMVar <$> newTVar (Just val)
-    Nothing -> TMVar <$> newTVar Nothing
+newTMVar val = TMVar <$> newTVar val
 
 takeTMVar :: TMVar a -> STM a
 takeTMVar (TMVar var) = do
@@ -83,8 +81,7 @@ takeTMVar (TMVar var) = do
     case x of
         Nothing -> retry
         Just a -> do
-            writeTVar var Nothing
-            pure a
+            a <$ writeTVar var Nothing
 
 putTMVar :: TMVar a -> a -> STM ()
 putTMVar (TMVar var) a = do
@@ -98,7 +95,7 @@ causeDeadlock = do
     var <- newTVarIO 5
     atomically $ do
         x <- readTVar var
-        check (x >= 10)
+        check (x >= 10) -- deadlock happens here
         writeTVar var $ x - 10
     -- will print -5 after commenting line with @check@
     -- readTVarIO var >>= print
