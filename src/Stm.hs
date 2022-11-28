@@ -4,14 +4,18 @@ module Stm
     ( makeCounter
     , makeCounterWithFork
     , writeIntoTvar
+    , mvarArray
     ) where
 
 import Control.Concurrent (forkIO, threadDelay)
-import Control.Concurrent.STM (TVar, atomically, modifyTVar, newTVar, newTVarIO, readTVarIO,
-                               writeTVar)
-import Control.Concurrent.STM.TVar (modifyTVar')
-import Control.Monad (replicateM_)
+import Control.Concurrent.MVar (MVar (..), modifyMVar_, newEmptyMVar, newMVar, putMVar, readMVar,
+                                takeMVar)
+import Control.Concurrent.STM (atomically)
+import Control.Concurrent.STM.TVar (TVar, modifyTVar, modifyTVar', newTVar, newTVarIO, readTVarIO,
+                                    writeTVar)
+import Control.Monad (replicateM, replicateM_)
 import Debug.Trace
+
 
 -- TVars
 
@@ -43,3 +47,18 @@ writeIntoTvar = do
     -- atomically $ modifyTVar name (++ " Prakash")
     atomically $ modifyTVar' name (++ " Prakash")
     readTVarIO name >>= print
+
+-- MVars
+
+mvarArray :: IO ()
+mvarArray = do
+    let n = 10
+    m <- replicateM n newEmptyMVar
+    repeats n m >>= print
+  where
+    repeats:: Int -> [MVar Int] -> IO [Int]
+    repeats n xs = do
+        mapM_ (\(e, x) -> putMVar e (x + 1)) $ zip xs [0..n]
+        modifyMVar_ (head xs) (\_ -> pure 999)
+        -- putMVar (head xs) 999
+        mapM takeMVar xs
