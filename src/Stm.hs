@@ -1,3 +1,4 @@
+{-# LANGUAGE LambdaCase         #-}
 {-# LANGUAGE NumericUnderscores #-}
 
 module Stm
@@ -5,14 +6,18 @@ module Stm
     , makeCounterWithFork
     , writeIntoTvar
     , mvarArray
+    , newTMVar
+    , takeTMVar
+    , putTMVar
+    , causeDeadlock
     ) where
 
 import Control.Concurrent (forkIO, threadDelay)
 import Control.Concurrent.MVar (MVar (..), modifyMVar_, newEmptyMVar, newMVar, putMVar, readMVar,
                                 takeMVar)
-import Control.Concurrent.STM (atomically)
-import Control.Concurrent.STM.TVar (TVar, modifyTVar, modifyTVar', newTVar, newTVarIO, readTVarIO,
-                                    writeTVar)
+import Control.Concurrent.STM (STM (..), atomically, check, retry)
+import Control.Concurrent.STM.TVar (TVar, modifyTVar, modifyTVar', newTVar, newTVarIO, readTVar,
+                                    readTVarIO, writeTVar)
 import Control.Monad (replicateM, replicateM_)
 import Debug.Trace
 
@@ -62,3 +67,38 @@ mvarArray = do
         modifyMVar_ (head xs) (\_ -> pure 999)
         -- putMVar (head xs) 999
         mapM takeMVar xs
+
+-- More TVar stuff
+
+newtype TMVar a = TMVar (TVar (Maybe a))
+
+newTMVar :: Maybe a -> STM (TMVar a)
+newTMVar = \case
+    Just val -> TMVar <$> newTVar (Just val)
+    Nothing -> TMVar <$> newTVar Nothing
+
+takeTMVar :: TMVar a -> STM a
+takeTMVar (TMVar var) = do
+    x <- readTVar var
+    case x of
+        Nothing -> retry
+        Just a -> do
+            writeTVar var Nothing
+            pure a
+
+putTMVar :: TMVar a -> a -> STM ()
+putTMVar (TMVar var) a = do
+    x <- readTVar var
+    case x of
+        Nothing -> writeTVar var $ Just a
+        Just _  -> retry
+
+causeDeadlock :: IO ()
+causeDeadlock = do
+    var <- newTVarIO 5
+    atomically $ do
+        x <- readTVar var
+        check (x >= 10)
+        writeTVar var $ x - 10
+    -- will print -5 after commenting line with @check@
+    -- readTVarIO var >>= print
