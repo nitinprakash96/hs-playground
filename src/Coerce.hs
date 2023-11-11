@@ -4,7 +4,7 @@
 
 module Coerce where
 
-import Data.Coerce
+import Data.Coerce ( coerce )
 import Data.Ord (Down (..))
 import qualified Data.Set as S
 
