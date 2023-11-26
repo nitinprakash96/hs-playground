@@ -2,7 +2,7 @@
 {-# LANGUAGE UnboxedTuples    #-}
 {-# LANGUAGE UnliftedNewtypes #-}
 
-module Main where
+module Maths where
 
 -- import GHC.Exts
 
