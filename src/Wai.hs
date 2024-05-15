@@ -5,10 +5,9 @@ module Wai where
 
 import Blaze.ByteString.Builder (fromByteString)
 import Blaze.ByteString.Builder.Char.Utf8 (fromShow)
-import Control.Concurrent.MVar (MVar (..), modifyMVar, newMVar)
+import Control.Concurrent.MVar (MVar, modifyMVar, newMVar)
 import Network.HTTP.Types (status200)
-import Network.Wai (Application (..), Request (..), Response (..), ResponseReceived (..),
-                    responseBuilder, responseLBS)
+import Network.Wai (Application, responseBuilder)
 import Network.Wai.Handler.Warp (run)
 
 -- application :: Request -> (Response -> IO ResponseReceived) -> IO ResponseReceived
